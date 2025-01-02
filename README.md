@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Documentación de Comandos de Integración con OpenAI
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esta documentación describe un conjunto de comandos Artisan diseñados para interactuar con la API de OpenAI para el procesamiento de documentos e IA conversacional.
 
-## About Laravel
+## Descripción General de Comandos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. `upload`
+Sube un archivo PDF a OpenAI y lo convierte en un almacén de vectores.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Uso:**
+```bash
+php artisan upload
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Proceso:**
+1. Lee la clave API de OpenAI desde la configuración
+2. Sube el archivo PDF (`colombia.pdf`) al almacenamiento de OpenAI
+3. Crea un almacén de vectores a partir del archivo subido
+4. Devuelve el ID del almacén de vectores
 
-## Learning Laravel
+**Variables Importantes:**
+- `$name`: Establecido como "Solvo Colombia 2025"
+- Ubicación del archivo: `public/colombia.pdf`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. `create_thread`
+Crea un nuevo hilo de conversación con el asistente de OpenAI.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Uso:**
+```bash
+php artisan create_thread
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Proceso:**
+1. Inicializa el cliente de OpenAI
+2. Crea un nuevo hilo
+3. Devuelve el ID del hilo
 
-## Laravel Sponsors
+### 3. `create_assistant`
+Crea un nuevo asistente de OpenAI con instrucciones específicas y acceso al PDF.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Uso:**
+```bash
+php artisan create_assistant
+```
 
-### Premium Partners
+**Configuración:**
+- Nombre del Asistente: "Solvo Colombia 2025"
+- Modelo: gpt-3.5-turbo-0125
+- Herramientas: búsqueda de archivos habilitada
+- Integración del Almacén de Vectores: Configurado con ID específico
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+**Áreas de Especialización:**
+- Procesos Administrativos y Compensación
+- Deserción y Retención
+- Bienestar
+- Administración de Ciberseguridad e Instalaciones
+- HR Vensure
+- Tecnología de la Información
+- Marketing
+- Operaciones
+- Personas y Cultura
+- Pasantías Solvo
+- Solvo Social
+- Adquisición de Talento
+- Relaciones Laborales y Capacitación
 
-## Contributing
+### 4. `chat`
+Inicia una conversación con el asistente utilizando IDs específicos de hilo y asistente.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Uso:**
+```bash
+php artisan chat
+```
 
-## Code of Conduct
+**Proceso:**
+1. Crea un nuevo mensaje en el hilo especificado
+2. Inicia una ejecución con el asistente
+3. Espera la finalización de la respuesta
+4. Recupera y muestra el último mensaje
+5. Muestra el total de tokens utilizados
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Configuración Predeterminada:**
+- ID del Hilo: `thread_Han3NyplDGUlA182DtshqCSu`
+- ID del Asistente: `asst_rhx8mjhKKFiVR08GtUM2jQvW`
 
-## Security Vulnerabilities
+### 5. `inspire`
+Muestra una frase inspiradora.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Uso:**
+```bash
+php artisan inspire
+```
 
-## License
+**Programación:** Se ejecuta cada hora
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Orden de Ejecución
+
+Para una configuración y uso correctos, ejecute los comandos en el siguiente orden:
+
+1. `upload` - Crear el almacén de vectores desde el PDF
+2. `create_thread` - Inicializar un hilo de conversación
+3. `create_assistant` - Configurar el asistente de IA
+4. `chat` - Comenzar la interacción con el asistente
+
+## Notas Importantes
+
+- Todos los comandos requieren una clave API válida de OpenAI configurada en la aplicación
+- El comando chat incluye un mecanismo de espera con un intervalo de 3 segundos
+- El asistente está específicamente diseñado para responder basándose en el contenido del PDF cargado
+- El asistente preguntará por el área específica de interés antes de proporcionar respuestas
+
+### Consideraciones Técnicas
+- Los comandos deben ejecutarse en un entorno con PHP y Laravel instalados
+- Es necesario tener configurado correctamente el archivo de entorno (.env) con la clave API de OpenAI
+- El sistema debe tener permisos de lectura/escritura en el directorio público para el manejo de archivos
